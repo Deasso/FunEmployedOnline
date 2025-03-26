@@ -53,32 +53,26 @@
             <button onclick="newRound()">Yeni Tur</button>
         </div>
     </div>
-<script type="module">
-  // Import the functions you need from the SDKs you need
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-app.js";
-  import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-analytics.js";
-  // TODO: Add SDKs for Firebase products that you want to use
-  // https://firebase.google.com/docs/web/setup#available-libraries
 
-  // Your web app's Firebase configuration
-  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-  const firebaseConfig = {
-    apiKey: "AIzaSyB5KiEUTNfao86swcobrgIpJfPT3hKL3jY",
-    authDomain: "funemployedonline.firebaseapp.com",
-    databaseURL: "https://funemployedonline-default-rtdb.europe-west1.firebasedatabase.app",
-    projectId: "funemployedonline",
-    storageBucket: "funemployedonline.firebasestorage.app",
-    messagingSenderId: "500515044000",
-    appId: "1:500515044000:web:41426d793010798fb5a7c5",
-    measurementId: "G-C1MCHF79LP"
-  };
-
-  // Initialize Firebase
-  const app = initializeApp(firebaseConfig);
-  const analytics = getAnalytics(app);
-</script>
+    <!-- Firebase 8.10.1 SDK -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
     <script>
+        // Firebase yapılandırması (kendi projenden al)
+        const firebaseConfig = {
+  apiKey: "AIzaSyB5KiEUTNfao86swcobrgIpJfPT3hKL3jY",
+  authDomain: "funemployedonline.firebaseapp.com",
+  databaseURL: "https://funemployedonline-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "funemployedonline",
+  storageBucket: "funemployedonline.firebasestorage.app",
+  messagingSenderId: "500515044000",
+  appId: "1:500515044000:web:41426d793010798fb5a7c5",
+  measurementId: "G-C1MCHF79LP"
+};
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+
         let currentRoomCode = null;
         let isRoomCreator = false;
         let players = [];
