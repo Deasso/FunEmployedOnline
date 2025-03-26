@@ -3,19 +3,76 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fun Employed - Oda Sistemi</title>
+    <title>Fun Employed - Geliştirilmiş Tasarım</title>
     <style>
-        body { font-family: Arial, sans-serif; text-align: center; background-color: #f0f0f0; margin: 0; padding: 20px; }
-        #game-container { background-color: white; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); max-width: 600px; margin: 0 auto; }
+        body {
+            font-family: 'Poppins', sans-serif;
+            text-align: center;
+            background: linear-gradient(135deg, #74ebd5, #acb6e5);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        #game-container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            max-width: 700px;
+            width: 100%;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        h1 {
+            color: #333;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+        }
         #create-room, #join-room, #setup, #game { display: none; }
         #create-room.active, #join-room.active, #setup.active, #game.active { display: block; }
-        #player-list, #room-code-input { width: 80%; margin: 10px 0; }
-        #player-list { height: 100px; }
-        #output, #room-info { margin: 20px 0; }
-        button { padding: 10px 20px; background-color: #4CAF50; color: white; border: none; border-radius: 5px; cursor: pointer; margin: 5px; }
-        button:hover { background-color: #45a049; }
+        #player-list, #room-code-input, #player-name {
+            width: 80%;
+            margin: 10px auto;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1em;
+            transition: border-color 0.3s;
+        }
+        #player-list { height: 100px; resize: none; }
+        #player-list:focus, #room-code-input:focus, #player-name:focus {
+            border-color: #ff6f61;
+            outline: none;
+        }
+        #output, #room-info, #player-list { margin: 20px 0; color: #444; }
+        button {
+            padding: 12px 25px;
+            background: linear-gradient(45deg, #ff6f61, #ff8e53);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: bold;
+            margin: 5px;
+            transition: transform 0.1s, box-shadow 0.3s;
+        }
+        button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
         #start-game-btn { display: none; }
+        p { font-size: 1.1em; line-height: 1.5; }
+        strong { color: #ff6f61; }
     </style>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 </head>
 <body>
     <div id="game-container">
@@ -70,8 +127,6 @@
   appId: "1:500515044000:web:41426d793010798fb5a7c5",
   measurementId: "G-C1MCHF79LP"
 };
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.database();
 
         let currentRoomCode = null;
         let isRoomCreator = false;
@@ -81,7 +136,27 @@
             "Uzay Turizmi Rehberi",
             "Çikolata Tadım Uzmanı",
             "Korsan Gemisi Kaptanı",
-            "Robot Tamircisi"
+            "Robot Tamircisi",
+            "Sualtı Arkeoloğu",
+            "Zaman Yolculuğu Rehberi",
+            "Ejderha Eğitmeni",
+            "Gizli Ajan Eğitmeni",
+            "Perili Ev Tasarımcısı",
+            "Yetenek Avcısı",
+            "Sihirli Orman Korumacısı",
+            "Uzaylı Diplomatı",
+            "Antik Yazıt Çözücüsü",
+            "Hayalet Avcısı",
+            "Deniz Canavarı Araştırmacısı",
+            "Göktaşı Madencisi",
+            "Sanal Gerçeklik Oyun Tasarımcısı",
+            "Mitolojik Yaratık Bakıcısı",
+            "Kayıp Şehir Kaşifi",
+            "Zamanda Sıkışmış Nesne Kurtarıcısı",
+            "Büyülü Kitap Kütüphanecisi",
+            "Gelecek Tahmincisi",
+            "Rüya Analiz Uzmanı",
+            "Gizli Hazine Avcısı"
         ];
         const traitsPool = [
             "Her zaman yanında bir ukulele taşır.", "Hayvanlarla konuşabildiğine inanır.", "Toplantılarda sürekli şeker yer.",
@@ -122,7 +197,35 @@
             "Sürekli yanlış kalemi düşürür.", "Her zaman yanlış notu yazar.", "Sürekli ‘bir şey mi buldum?’ der ama bulmamıştır.",
             "Her şeye ‘eski bir fikir’ der.", "Sürekli yanlış tabağı düşürür.", "Her zaman yanlış koltuğu seçer.",
             "Sürekli ‘bir şey mi duydum?’ der.", "Her şeye ‘bunu hatırlıyorum’ der ama hatırlamaz.", "Sürekli yanlış telefonu açar.",
-            "Her zaman yanlış ışığı kapatır.", "Sürekli ‘bir şey mi yaptım?’ der ama yapmamıştır.", "Her şeye ‘eski bir plan’ der."
+            "Her zaman yanlış ışığı kapatır.", "Sürekli ‘bir şey mi yaptım?’ der ama yapmamıştır.", "Her şeye ‘eski bir plan’ der.",
+            // Yeni 80 özellik
+            "Her zaman bir sihirbaz şapkası takar.", "Sürekli bir sihir numarası yapmaya çalışır.", "Her şeye ‘büyüleyici’ der.",
+            "Kendi uydurduğu bir şarkıyı sürekli söyler.", "Her zaman yanlış dansı yapar.", "Sürekli ‘biraz sihir lazım’ der.",
+            "Her şeye ‘bunu bir sihirbaz yapabilir’ der.", "Sürekli bir sihirli değnek taşır.", "Her zaman yanlış büyüyü yapar.",
+            "Sürekli ‘bir sihirbaz asla geç kalmaz’ der.", "Her şeye ‘bunu sihirle çözerim’ der.", "Sürekli bir sihirbaz hilesi anlatır.",
+            "Her zaman yanlış sihirbaz numarasını yapar.", "Sürekli ‘bir sihirbazın sırrı’ der.", "Her şeye ‘sihirli bir çözüm’ der.",
+            "Sürekli bir sihirbaz şovu planlar.", "Her zaman yanlış sihirbaz kostümü giyer.", "Sürekli ‘sihirbazlık yapıyorum’ der.",
+            "Her şeye ‘bunu sihirle yaparım’ der.", "Sürekli bir sihirbaz kitabı okur.", "Her zaman yanlış sihirbaz büyüsünü yapar.",
+            "Sürekli ‘bir sihirbazın yolu’ der.", "Her şeye ‘sihirli bir dokunuş’ der.", "Sürekli bir sihirbaz asası düşürür.",
+            "Her zaman yanlış sihirbaz şapkasını takar.", "Sürekli ‘sihirbazlık zamanı’ der.", "Her şeye ‘bunu sihirle hallederim’ der.",
+            "Sürekli bir sihirbaz numarası bozar.", "Her zaman yanlış sihirbaz büyüsünü okur.", "Sürekli ‘sihirbazlık yapıyorum’ der.",
+            "Her şeye ‘sihirli bir plan’ der.", "Sürekli bir sihirbaz şovu bozar.", "Her zaman yanlış sihirbaz numarasını seçer.",
+            "Sürekli ‘bir sihirbazın hilesi’ der.", "Her şeye ‘sihirli bir fikir’ der.", "Sürekli bir sihirbaz asası kırar.",
+            "Her zaman yanlış sihirbaz kostümünü seçer.", "Sürekli ‘sihirbazlık zamanı’ der.", "Her şeye ‘bunu sihirle yaparım’ der.",
+            "Sürekli bir sihirbaz numarası unutur.", "Her zaman yanlış sihirbaz büyüsünü seçer.", "Sürekli ‘sihirbazlık yapıyorum’ der.",
+            "Her şeye ‘sihirli bir çözüm’ der.", "Sürekli bir sihirbaz şovu unutur.", "Her zaman yanlış sihirbaz numarasını yapar.",
+            "Sürekli ‘bir sihirbazın sırrı’ der.", "Her şeye ‘sihirli bir dokunuş’ der.", "Sürekli bir sihirbaz asası kaybeder.",
+            "Her zaman yanlış sihirbaz şapkasını düşürür.", "Sürekli ‘sihirbazlık zamanı’ der.", "Her şeye ‘bunu sihirle hallederim’ der.",
+            "Sürekli bir sihirbaz numarası bozar.", "Her zaman yanlış sihirbaz büyüsünü yapar.", "Sürekli ‘sihirbazlık yapıyorum’ der.",
+            "Her şeye ‘sihirli bir plan’ der.", "Sürekli bir sihirbaz şovu bozar.", "Her zaman yanlış sihirbaz numarasını seçer.",
+            "Sürekli ‘bir sihirbazın hilesi’ der.", "Her şeye ‘sihirli bir fikir’ der.", "Sürekli bir sihirbaz asası kırar.",
+            "Her zaman yanlış sihirbaz kostümünü seçer.", "Sürekli ‘sihirbazlık zamanı’ der.", "Her şeye ‘bunu sihirle yaparım’ der.",
+            "Sürekli bir sihirbaz numarası unutur.", "Her zaman yanlış sihirbaz büyüsünü seçer.", "Sürekli ‘sihirbazlık yapıyorum’ der.",
+            "Her şeye ‘sihirli bir çözüm’ der.", "Sürekli bir sihirbaz şovu unutur.", "Her zaman yanlış sihirbaz numarasını yapar.",
+            "Sürekli ‘bir sihirbazın sırrı’ der.", "Her şeye ‘sihirli bir dokunuş’ der.", "Sürekli bir sihirbaz asası kaybeder.",
+            "Her zaman yanlış sihirbaz şapkasını düşürür.", "Sürekli ‘sihirbazlık zamanı’ der.", "Her şeye ‘bunu sihirle hallederim’ der.",
+            "Sürekli bir sihirbaz numarası bozar.", "Her zaman yanlış sihirbaz büyüsünü yapar.", "Sürekli ‘sihirbazlık yapıyorum’ der.",
+            "Her şeye ‘sihirli bir plan’ der.", "Sürekli bir sihirbaz şovu bozar.", "Her zaman yanlış sihirbaz numarasını seçer."
         ];
 
         function getRandomTraits(count) {
@@ -137,7 +240,7 @@
         }
 
         function createRoom() {
-            currentRoomCode = Math.random().toString(36).substring(2, 8).toUpperCase(); // Rastgele 6 karakterlik kod
+            currentRoomCode = Math.random().toString(36).substring(2, 8).toUpperCase();
             isRoomCreator = true;
             db.ref(`rooms/${currentRoomCode}`).set({
                 players: [],
