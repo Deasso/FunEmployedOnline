@@ -3,27 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fun Employed - Gerçek Zamanlı</title>
+    <title>Fun Employed - Oda Sistemi</title>
     <style>
         body { font-family: Arial, sans-serif; text-align: center; background-color: #f0f0f0; margin: 0; padding: 20px; }
         #game-container { background-color: white; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); max-width: 600px; margin: 0 auto; }
-        #setup, #game { display: none; }
-        #setup.active, #game.active { display: block; }
-        #player-list { width: 80%; height: 100px; margin: 10px 0; }
-        #output { margin: 20px 0; }
-        button { padding: 10px 20px; background-color: #4CAF50; color: white; border: none; border-radius: 5px; cursor: pointer; }
+        #create-room, #join-room, #setup, #game { display: none; }
+        #create-room.active, #join-room.active, #setup.active, #game.active { display: block; }
+        #player-list, #room-code-input { width: 80%; margin: 10px 0; }
+        #player-list { height: 100px; }
+        #output, #room-info { margin: 20px 0; }
+        button { padding: 10px 20px; background-color: #4CAF50; color: white; border: none; border-radius: 5px; cursor: pointer; margin: 5px; }
         button:hover { background-color: #45a049; }
+        #start-game-btn { display: none; }
     </style>
 </head>
 <body>
     <div id="game-container">
         <h1>Fun Employed - Online</h1>
-        <div id="setup" class="active">
-            <p>İsimleri her satıra bir tane olacak şekilde gir:</p>
-            <textarea id="player-list" placeholder="Örn:\nSen\nAli\nBetül\nCan\nDeniz"></textarea>
-            <br>
-            <button onclick="startGame()">Oyunu Başlat</button>
+
+        <!-- Oda Oluşturma Ekranı -->
+        <div id="create-room" class="active">
+            <button onclick="createRoom()">Oda Oluştur</button>
+            <button onclick="showJoinRoom()">Odaya Katıl</button>
         </div>
+
+        <!-- Odaya Katılma Ekranı -->
+        <div id="join-room">
+            <p>Oda kodunu gir:</p>
+            <input type="text" id="room-code-input" placeholder="Oda kodu">
+            <br>
+            <button onclick="joinRoom()">Katıl</button>
+            <button onclick="showCreateRoom()">Geri Dön</button>
+        </div>
+
+        <!-- İsim Girme Ekranı -->
+        <div id="setup">
+            <div id="room-info"></div>
+            <p>İsmini gir:</p>
+            <input type="text" id="player-name" placeholder="İsmin">
+            <br>
+            <button onclick="addPlayer()">İsmi Ekle</button>
+            <div id="player-list"></div>
+            <button id="start-game-btn" onclick="startGame()">Oyunu Başlat</button>
+        </div>
+
+        <!-- Oyun Ekranı -->
         <div id="game">
             <div id="output"></div>
             <button onclick="newRound()">Yeni Tur</button>
@@ -35,7 +59,7 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
     <script>
-       // Import the functions you need from the SDKs you need
+        // Import the functions you need from the SDKs you need
   import { initializeApp } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-app.js";
   import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-analytics.js";
   // TODO: Add SDKs for Firebase products that you want to use
@@ -57,9 +81,12 @@
   // Initialize Firebase
   const app = initializeApp(firebaseConfig);
   const analytics = getAnalytics(app);
+        
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
 
+        let currentRoomCode = null;
+        let isRoomCreator = false;
         let players = [];
         const jobs = [
             "Hayvanat Bahçesi Müdürü",
@@ -121,15 +148,93 @@
             return traits;
         }
 
-        function startGame() {
-            const input = document.getElementById("player-list").value.trim();
-            players = input.split("\n").filter(name => name.trim() !== "");
-            if (players.length < 2) {
-                alert("En az 2 oyuncu giriniz!");
+        function createRoom() {
+            currentRoomCode = Math.random().toString(36).substring(2, 8).toUpperCase(); // Rastgele 6 karakterlik kod
+            isRoomCreator = true;
+            db.ref(`rooms/${currentRoomCode}`).set({
+                players: [],
+                gameStarted: false
+            });
+            showSetupScreen();
+        }
+
+        function joinRoom() {
+            const roomCode = document.getElementById("room-code-input").value.trim().toUpperCase();
+            if (!roomCode) {
+                alert("Lütfen bir oda kodu gir!");
                 return;
             }
-            document.getElementById("setup").classList.remove("active");
-            document.getElementById("game").classList.add("active");
+            db.ref(`rooms/${roomCode}`).once("value", (snapshot) => {
+                if (snapshot.exists()) {
+                    currentRoomCode = roomCode;
+                    isRoomCreator = false;
+                    showSetupScreen();
+                } else {
+                    alert("Böyle bir oda bulunamadı!");
+                }
+            });
+        }
+
+        function showSetupScreen() {
+            document.getElementById("create-room").classList.remove("active");
+            document.getElementById("join-room").classList.remove("active");
+            document.getElementById("setup").classList.add("active");
+            document.getElementById("room-info").innerHTML = `Oda Kodu: <strong>${currentRoomCode}</strong>`;
+            if (isRoomCreator) {
+                document.getElementById("start-game-btn").style.display = "block";
+            }
+            listenForPlayers();
+        }
+
+        function showJoinRoom() {
+            document.getElementById("create-room").classList.remove("active");
+            document.getElementById("join-room").classList.add("active");
+        }
+
+        function showCreateRoom() {
+            document.getElementById("join-room").classList.remove("active");
+            document.getElementById("create-room").classList.add("active");
+        }
+
+        function addPlayer() {
+            const playerName = document.getElementById("player-name").value.trim();
+            if (!playerName) {
+                alert("Lütfen bir isim gir!");
+                return;
+            }
+            db.ref(`rooms/${currentRoomCode}/players`).once("value", (snapshot) => {
+                let currentPlayers = snapshot.val() || [];
+                if (!currentPlayers.includes(playerName)) {
+                    currentPlayers.push(playerName);
+                    db.ref(`rooms/${currentRoomCode}/players`).set(currentPlayers);
+                }
+                document.getElementById("player-name").value = "";
+            });
+        }
+
+        function listenForPlayers() {
+            db.ref(`rooms/${currentRoomCode}`).on("value", (snapshot) => {
+                const data = snapshot.val();
+                if (!data) return;
+                players = data.players || [];
+                document.getElementById("player-list").innerHTML = players.length > 0
+                    ? `Katılan Oyuncular: ${players.join(", ")}`
+                    : "Henüz kimse katılmadı.";
+                if (data.gameStarted) {
+                    document.getElementById("setup").classList.remove("active");
+                    document.getElementById("game").classList.add("active");
+                    displayGame();
+                }
+            });
+        }
+
+        function startGame() {
+            if (!isRoomCreator) return;
+            if (players.length < 2) {
+                alert("En az 2 oyuncu olmalı!");
+                return;
+            }
+            db.ref(`rooms/${currentRoomCode}/gameStarted`).set(true);
             saveAndDisplayRound();
         }
 
@@ -146,27 +251,28 @@
                 }
             });
 
-            db.ref("game").set(gameData);
+            db.ref(`rooms/${currentRoomCode}/gameData`).set(gameData);
         }
 
         function newRound() {
             saveAndDisplayRound();
         }
 
-        // Gerçek zamanlı güncelleme
-        db.ref("game").on("value", (snapshot) => {
-            const data = snapshot.val();
-            if (!data) return;
-            let html = "";
-            for (let player in data) {
-                if (data[player].type === "job") {
-                    html += `<p><strong>${player}</strong>: İş Pozisyonu - ${data[player].value}</p>`;
-                } else {
-                    html += `<p><strong>${player}</strong>: Özellikler - ${data[player].value.join(", ")}</p>`;
+        function displayGame() {
+            db.ref(`rooms/${currentRoomCode}/gameData`).on("value", (snapshot) => {
+                const data = snapshot.val();
+                if (!data) return;
+                let html = "";
+                for (let player in data) {
+                    if (data[player].type === "job") {
+                        html += `<p><strong>${player}</strong>: İş Pozisyonu - ${data[player].value}</p>`;
+                    } else {
+                        html += `<p><strong>${player}</strong>: Özellikler - ${data[player].value.join(", ")}</p>`;
+                    }
                 }
-            }
-            document.getElementById("output").innerHTML = html;
-        });
+                document.getElementById("output").innerHTML = html;
+            });
+        }
     </script>
 </body>
 </html>
