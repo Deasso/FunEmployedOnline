@@ -30,33 +30,21 @@
         </div>
     </div>
 
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js"></script>
+    <!-- Firebase 8.x SDK -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
     <script>
-        // Import the functions you need from the SDKs you need
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-app.js";
-  import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-analytics.js";
-  // TODO: Add SDKs for Firebase products that you want to use
-  // https://firebase.google.com/docs/web/setup#available-libraries
-
-  // Your web app's Firebase configuration
-  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-  const firebaseConfig = {
-    apiKey: "AIzaSyAjnjdsMbEIR0ikms8_FU5UHTRrPEhSBmI",
-    authDomain: "isgorusme-5d457.firebaseapp.com",
-    projectId: "isgorusme-5d457",
-    storageBucket: "isgorusme-5d457.firebasestorage.app",
-    messagingSenderId: "611694295400",
-    appId: "1:611694295400:web:e0271b675ef91442223edd",
-    measurementId: "G-EPELE7L0TF"
+      const firebaseConfig = {
+    apiKey: "AIzaSyB5KiEUTNfao86swcobrgIpJfPT3hKL3jY",
+    authDomain: "funemployedonline.firebaseapp.com",
+    databaseURL: "https://funemployedonline-default-rtdb.europe-west1.firebasedatabase.app",
+    projectId: "funemployedonline",
+    storageBucket: "funemployedonline.firebasestorage.app",
+    messagingSenderId: "500515044000",
+    appId: "1:500515044000:web:41426d793010798fb5a7c5",
+    measurementId: "G-C1MCHF79LP"
   };
-
-  // Initialize Firebase
-  const app = initializeApp(firebaseConfig);
-  const analytics = getAnalytics(app);
-  
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
 
@@ -71,8 +59,43 @@
         const traitsPool = [
             "Her zaman yanında bir ukulele taşır.", "Hayvanlarla konuşabildiğine inanır.", "Toplantılarda sürekli şeker yer.",
             "Daha önce bir sirke palyaço olarak çalıştı.", "Günde 10 bardak kahve içer.", "Kendi icadı bir dans hareketi var.",
-            // ... (120 özelliğin tamamını ekledim, burada kısaltıyorum)
-            "Her şeye ‘eski bir plan’ der."
+            "Her şeye alerjisi var gibi davranır.", "Çocukken astronot olmak istiyordu.", "Sürekli espri yapar ama kimse gülmez.",
+            "Her yere bisikletle gider.", "Duvarda gölgesini kung-fu yapıyormuş gibi gösterir.", "Kendi kendine şarkı mırıldanır.",
+            "Ayakkabılarını hep yanlış bağlar.", "Her zaman yanlış kapıyı çalar.", "Kedilere fısıldayan biri olduğunu iddia eder.",
+            "Sürekli yanlış kelimeleri kullanır.", "Her şeye ‘vay canına’ der.", "Telefonunu sürekli düşürür.",
+            "Yemek yerken garip sesler çıkarır.", "Her zaman yanlış saatte uyanır.", "Sürekli bir şeyleri unutur.",
+            "Kendi uydurduğu bir dilde konuşur.", "Her şeye aşırı tepki verir.", "Sürekli not alır ama nereye koyduğunu unutur.",
+            "Her zaman yanlış otobüse biner.", "Parmaklarını çıtlatmaktan hoşlanır.", "Her yere geç kalır ama bahane bulur.",
+            "Sürekli aynı hikayeyi anlatır.", "Her şeye ‘bence’ diye başlar.", "Kendi kendine kahkaha atar.",
+            "Her zaman yanlış yöne yürür.", "Sürekli bir şeyleri devirir.", "Her şeye ‘eski usul’ der.",
+            "Bir şey bulamayınca ‘biri çaldı’ der.", "Her zaman yanlış numarayı arar.", "Sürekli bir şeyleri tamir etmeye çalışır ama bozar.",
+            "Her şeye ‘tabii ki’ diye cevap verir.", "Sürekli bir şeyleri yanlış anlar.", "Her zaman yanlış sırayı takip eder.",
+            "Sürekli ‘bir saniye’ der ama geri dönmez.", "Her şeye ‘düşüncem şu’ diye başlar.", "Sürekli bir şeyleri kaybeder.",
+            "Her zaman yanlış şapkayı takar.", "Sürekli ‘bunu ben yaparım’ der ama yapamaz.", "Her şeye ‘eski bir dostum’ hikayesiyle başlar.",
+            "Sürekli yanlış sandalyeye oturur.", "Her zaman yanlış anahtarı kullanır.", "Sürekli ‘bir fikrim var’ der ama yoktur.",
+            "Her şeye ‘bunu daha önce gördüm’ der.", "Sürekli yanlış çorabı giyer.", "Her zaman yanlış bardaktan içer.",
+            "Sürekli ‘birazdan’ der ama yapmaz.", "Her şeye ‘ben demiştim’ der.", "Sürekli yanlış düğmeye basar.",
+            "Her zaman yanlış kitabı okur.", "Sürekli ‘bir şey duydum’ der ama duymamıştır.", "Her şeye ‘eski bir gelenek’ der.",
+            "Sürekli yanlış şemsiyeyi alır.", "Her zaman yanlış çantayı taşır.", "Sürekli ‘bir planım var’ der ama yoktur.",
+            "Her şeye ‘bunu ben buldum’ der.", "Sürekli yanlış yoldan gider.", "Her zaman yanlış kapıyı açar.",
+            "Sürekli ‘bir şey hatırladım’ der ama hatırlamaz.", "Her şeye ‘bunu yaparım’ der ama yapmaz.", "Sürekli yanlış saati takip eder.",
+            "Her zaman yanlış dosyayı açar.", "Sürekli ‘bir şey buldum’ der ama bulmamıştır.", "Her şeye ‘eski bir numara’ der.",
+            "Sürekli yanlış kalemi kullanır.", "Her zaman yanlış notu alır.", "Sürekli ‘bir şey gördüm’ der ama görmemiştir.",
+            "Her şeye ‘bunu biliyorum’ der ama bilmez.", "Sürekli yanlış tabağı alır.", "Her zaman yanlış koltuğa oturur.",
+            "Sürekli ‘bir şey mi dedin?’ der.", "Her şeye ‘eski bir alışkanlık’ der.", "Sürekli yanlış telefonu şarj eder.",
+            "Her zaman yanlış ışığı açar.", "Sürekli ‘bir şey yapıyorum’ der ama yapmaz.", "Her şeye ‘bunu çözdüm’ der ama çözmez.",
+            "Sürekli yanlış çorabı çeker.", "Her zaman yanlış fincanı kullanır.", "Sürekli ‘bir şey duydum mu?’ der.",
+            "Her şeye ‘eski bir taktik’ der.", "Sürekli yanlış şapkayı düşürür.", "Her zaman yanlış yiyeceği yer.",
+            "Sürekli ‘bir şey mi söyledim?’ der.", "Her şeye ‘bunu hallederim’ der ama halledemez.", "Sürekli yanlış çantayı açar.",
+            "Her zaman yanlış dosyayı siler.", "Sürekli ‘bir şey mi kaybettim?’ der.", "Her şeye ‘eski bir hile’ der.",
+            "Sürekli yanlış saate bakar.", "Her zaman yanlış kitabı alır.", "Sürekli ‘bir şey mi yaptım?’ der.",
+            "Her şeye ‘bunu gördüm’ der ama görmemiştir.", "Sürekli yanlış anahtarı düşürür.", "Her zaman yanlış kapıyı çalar.",
+            "Sürekli ‘bir şey mi unuttum?’ der.", "Her şeye ‘eski bir yöntem’ der.", "Sürekli yanlış şemsiyeyi açar.",
+            "Her zaman yanlış bardakla içer.", "Sürekli ‘bir şey mi söyledim?’ der.", "Her şeye ‘bunu yapabilirim’ der ama yapamaz.",
+            "Sürekli yanlış kalemi düşürür.", "Her zaman yanlış notu yazar.", "Sürekli ‘bir şey mi buldum?’ der ama bulmamıştır.",
+            "Her şeye ‘eski bir fikir’ der.", "Sürekli yanlış tabağı düşürür.", "Her zaman yanlış koltuğu seçer.",
+            "Sürekli ‘bir şey mi duydum?’ der.", "Her şeye ‘bunu hatırlıyorum’ der ama hatırlamaz.", "Sürekli yanlış telefonu açar.",
+            "Her zaman yanlış ışığı kapatır.", "Sürekli ‘bir şey mi yaptım?’ der ama yapmamıştır.", "Her şeye ‘eski bir plan’ der."
         ];
 
         function getRandomTraits(count) {
@@ -132,50 +155,6 @@
             }
             document.getElementById("output").innerHTML = html;
         });
-
-        // 120 özellik (tam liste)
-        const fullTraitsPool = [
-            "Her zaman yanında bir ukulele taşır.", "Hayvanlarla konuşabildiğine inanır.", "Toplantılarda sürekli şeker yer.",
-            "Daha önce bir sirke palyaço olarak çalıştı.", "Günde 10 bardak kahve içer.", "Kendi icadı bir dans hareketi var.",
-            "Her şeye alerjisi var gibi davranır.", "Çocukken astronot olmak istiyordu.", "Sürekli espri yapar ama kimse gülmez.",
-            "Her yere bisikletle gider.", "Duvarda gölgesini kung-fu yapıyormuş gibi gösterir.", "Kendi kendine şarkı mırıldanır.",
-            "Ayakkabılarını hep yanlış bağlar.", "Her zaman yanlış kapıyı çalar.", "Kedilere fısıldayan biri olduğunu iddia eder.",
-            "Sürekli yanlış kelimeleri kullanır.", "Her şeye ‘vay canına’ der.", "Telefonunu sürekli düşürür.",
-            "Yemek yerken garip sesler çıkarır.", "Her zaman yanlış saatte uyanır.", "Sürekli bir şeyleri unutur.",
-            "Kendi uydurduğu bir dilde konuşur.", "Her şeye aşırı tepki verir.", "Sürekli not alır ama nereye koyduğunu unutur.",
-            "Her zaman yanlış otobüse biner.", "Parmaklarını çıtlatmaktan hoşlanır.", "Her yere geç kalır ama bahane bulur.",
-            "Sürekli aynı hikayeyi anlatır.", "Her şeye ‘bence’ diye başlar.", "Kendi kendine kahkaha atar.",
-            "Her zaman yanlış yöne yürür.", "Sürekli bir şeyleri devirir.", "Her şeye ‘eski usul’ der.",
-            "Bir şey bulamayınca ‘biri çaldı’ der.", "Her zaman yanlış numarayı arar.", "Sürekli bir şeyleri tamir etmeye çalışır ama bozar.",
-            "Her şeye ‘tabii ki’ diye cevap verir.", "Sürekli bir şeyleri yanlış anlar.", "Her zaman yanlış sırayı takip eder.",
-            "Sürekli ‘bir saniye’ der ama geri dönmez.", "Her şeye ‘düşüncem şu’ diye başlar.", "Sürekli bir şeyleri kaybeder.",
-            "Her zaman yanlış şapkayı takar.", "Sürekli ‘bunu ben yaparım’ der ama yapamaz.", "Her şeye ‘eski bir dostum’ hikayesiyle başlar.",
-            "Sürekli yanlış sandalyeye oturur.", "Her zaman yanlış anahtarı kullanır.", "Sürekli ‘bir fikrim var’ der ama yoktur.",
-            "Her şeye ‘bunu daha önce gördüm’ der.", "Sürekli yanlış çorabı giyer.", "Her zaman yanlış bardaktan içer.",
-            "Sürekli ‘birazdan’ der ama yapmaz.", "Her şeye ‘ben demiştim’ der.", "Sürekli yanlış düğmeye basar.",
-            "Her zaman yanlış kitabı okur.", "Sürekli ‘bir şey duydum’ der ama duymamıştır.", "Her şeye ‘eski bir gelenek’ der.",
-            "Sürekli yanlış şemsiyeyi alır.", "Her zaman yanlış çantayı taşır.", "Sürekli ‘bir planım var’ der ama yoktur.",
-            "Her şeye ‘bunu ben buldum’ der.", "Sürekli yanlış yoldan gider.", "Her zaman yanlış kapıyı açar.",
-            "Sürekli ‘bir şey hatırladım’ der ama hatırlamaz.", "Her şeye ‘bunu yaparım’ der ama yapmaz.", "Sürekli yanlış saati takip eder.",
-            "Her zaman yanlış dosyayı açar.", "Sürekli ‘bir şey buldum’ der ama bulmamıştır.", "Her şeye ‘eski bir numara’ der.",
-            "Sürekli yanlış kalemi kullanır.", "Her zaman yanlış notu alır.", "Sürekli ‘bir şey gördüm’ der ama görmemiştir.",
-            "Her şeye ‘bunu biliyorum’ der ama bilmez.", "Sürekli yanlış tabağı alır.", "Her zaman yanlış koltuğa oturur.",
-            "Sürekli ‘bir şey mi dedin?’ der.", "Her şeye ‘eski bir alışkanlık’ der.", "Sürekli yanlış telefonu şarj eder.",
-            "Her zaman yanlış ışığı açar.", "Sürekli ‘bir şey yapıyorum’ der ama yapmaz.", "Her şeye ‘bunu çözdüm’ der ama çözmez.",
-            "Sürekli yanlış çorabı çeker.", "Her zaman yanlış fincanı kullanır.", "Sürekli ‘bir şey duydum mu?’ der.",
-            "Her şeye ‘eski bir taktik’ der.", "Sürekli yanlış şapkayı düşürür.", "Her zaman yanlış yiyeceği yer.",
-            "Sürekli ‘bir şey mi söyledim?’ der.", "Her şeye ‘bunu hallederim’ der ama halledemez.", "Sürekli yanlış çantayı açar.",
-            "Her zaman yanlış dosyayı siler.", "Sürekli ‘bir şey mi kaybettim?’ der.", "Her şeye ‘eski bir hile’ der.",
-            "Sürekli yanlış saate bakar.", "Her zaman yanlış kitabı alır.", "Sürekli ‘bir şey mi yaptım?’ der.",
-            "Her şeye ‘bunu gördüm’ der ama görmemiştir.", "Sürekli yanlış anahtarı düşürür.", "Her zaman yanlış kapıyı çalar.",
-            "Sürekli ‘bir şey mi unuttum?’ der.", "Her şeye ‘eski bir yöntem’ der.", "Sürekli yanlış şemsiyeyi açar.",
-            "Her zaman yanlış bardakla içer.", "Sürekli ‘bir şey mi söyledim?’ der.", "Her şeye ‘bunu yapabilirim’ der ama yapamaz.",
-            "Sürekli yanlış kalemi düşürür.", "Her zaman yanlış notu yazar.", "Sürekli ‘bir şey mi buldum?’ der ama bulmamıştır.",
-            "Her şeye ‘eski bir fikir’ der.", "Sürekli yanlış tabağı düşürür.", "Her zaman yanlış koltuğu seçer.",
-            "Sürekli ‘bir şey mi duydum?’ der.", "Her şeye ‘bunu hatırlıyorum’ der ama hatırlamaz.", "Sürekli yanlış telefonu açar.",
-            "Her zaman yanlış ışığı kapatır.", "Sürekli ‘bir şey mi yaptım?’ der ama yapmamıştır.", "Her şeye ‘eski bir plan’ der."
-        ];
-        traitsPool.push(...fullTraitsPool); // Tüm özellikleri ekle
     </script>
 </body>
 </html>
