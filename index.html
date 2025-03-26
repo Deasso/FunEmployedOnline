@@ -118,15 +118,17 @@
     <script>
         // Firebase yapılandırması (kendi projenden al)
         const firebaseConfig = {
-  apiKey: "AIzaSyB5KiEUTNfao86swcobrgIpJfPT3hKL3jY",
-  authDomain: "funemployedonline.firebaseapp.com",
-  databaseURL: "https://funemployedonline-default-rtdb.europe-west1.firebasedatabase.app",
-  projectId: "funemployedonline",
-  storageBucket: "funemployedonline.firebasestorage.app",
-  messagingSenderId: "500515044000",
-  appId: "1:500515044000:web:41426d793010798fb5a7c5",
-  measurementId: "G-C1MCHF79LP"
-};
+    apiKey: "AIzaSyB5KiEUTNfao86swcobrgIpJfPT3hKL3jY",
+    authDomain: "funemployedonline.firebaseapp.com",
+    databaseURL: "https://funemployedonline-default-rtdb.europe-west1.firebasedatabase.app",
+    projectId: "funemployedonline",
+    storageBucket: "funemployedonline.firebasestorage.app",
+    messagingSenderId: "500515044000",
+    appId: "1:500515044000:web:41426d793010798fb5a7c5",
+    measurementId: "G-C1MCHF79LP"
+  };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
 
         let currentRoomCode = null;
         let isRoomCreator = false;
